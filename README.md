@@ -29,6 +29,7 @@ https://www.pricehubble.com/fr/blog/base-dvf-ventes-immobilieres-france
 
 ## AI usage declaration
 - AI was used in the streamlit interface UI and for programming how to store a session history 
+- AI tools were used selectively to assist with debugging (e.g., resolving CORS issues and environment configuration)
 
 ## Project Structure and Installation 
 - Skipping this part for now
