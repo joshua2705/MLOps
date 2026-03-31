@@ -1,13 +1,13 @@
 from fastmcp import FastMCP
 import httpx
 
-mcp = FastMCP("Real-Estate-Estimate")
+mcp = FastMCP(name="Real Estate Estimate")
 API_BASE_URL = "http://127.0.0.1:8000"
 
 @mcp.tool()
 async def get_property_estimate(
-    surface_reelle_bati: float,
-    nombre_pieces_principales: int,
+    surface_area: float,
+    number_of_rooms: int,
     code_departement: str,
     type_local: str
 ) -> str:
@@ -17,13 +17,13 @@ async def get_property_estimate(
     """
 
     payload = {
-        "surface_reelle_bati": surface_reelle_bati,
-        "nombre_pieces_principales": nombre_pieces_principales,
+        "surface_reelle_bati": surface_area,
+        "nombre_pieces_principales": number_of_rooms,
         "code_departement": code_departement,
         "type_local": type_local
     }
 
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(timeout=120.0) as client:
         response = await client.post(f"{API_BASE_URL}/estimate/", json=payload)
         
         if response.status_code != 200:
@@ -35,4 +35,4 @@ async def get_property_estimate(
         return f"Estimated Value: {val}€"
 
 if __name__ == "__main__":
-    mcp.run(transport="stdio")
+    mcp.run()
