@@ -32,6 +32,10 @@ async def get_property_estimate(
         data = response.json()
         val = data.get("estimated_value_eur")
         
+        # Error hanlding if LLM works but the API breaks 
+        if val is None:
+            return "Error: The estimated value was not found in the API response."
+        
         return f"Estimated Value: {val}€"
 
 if __name__ == "__main__":

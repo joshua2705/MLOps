@@ -3,12 +3,16 @@ import asyncio
 from fastmcp import Client
 from google import genai
 from mcp_server import mcp
+from dotenv import load_dotenv
+import os
 
 # Dear professor, I tried stdio, sse even uvstdio to connect to the MCP server, but I kept running into issues.
 # So I finally resorted to this quick and dirty fix of importing it directly
 
 mcp_client = Client(mcp)
-gemini_client = genai.Client(api_key="")
+
+load_dotenv()
+gemini_client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 SYSTEM_INSTRUCTION = """
 You are a Real Estate Valuation Assistant. 
@@ -43,7 +47,8 @@ async def call_gemini_with_mcp(conversation_history: list[dict]) -> str:
         return response.text
 
 
-# I used AI to add the conversation history to the Gemini call. 
+# I used AI to add the conversation history to the Gemini call.
+# I used AI to generat the UI code in streamlit but I understand what it does 
 # --- STREAMLIT UI ---
 st.set_page_config(page_title="Cesar AI - Real Estate Estimator", page_icon="🏠")
 st.title("🏠 CESAR BOT")
