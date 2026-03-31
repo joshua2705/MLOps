@@ -25,7 +25,7 @@ async def get_property_estimate(
         "code_commune": code_commune
     }
 
-    async with httpx.AsyncClient(timeout=120.0) as client:
+    async with httpx.AsyncClient(timeout=20.0) as client:
         response = await client.post(f"{API_BASE_URL}/estimate/", json=payload)
         
         if response.status_code != 200:
@@ -39,6 +39,21 @@ async def get_property_estimate(
             return "Error: The estimated value was not found in the API response."
         
         return f"Estimated Value: {val}€"
+
+@mcp.tool()
+async def get_api_health()-> str:
+    """
+    Checks the health of the inference API and provides additional information.
+    """
+    async with httpx.AsyncClient(timeout=20.0) as client:
+        try:
+            response = await client.get(f"{API_BASE_URL}/health")
+            if response.status_code == 200:
+                print(response.json()["status"])
+                return response.json()["status"]
+            return "API Offline"
+        except Exception as e:
+            return f"Error connecting to API: {str(e)}"
 
 if __name__ == "__main__":
     mcp.run()

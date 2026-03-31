@@ -16,8 +16,7 @@ gemini_client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 SYSTEM_INSTRUCTION = """
 You are a Real Estate Valuation Assistant. 
-Your ONLY goal is to provide property estimates using the 'get_property_estimate' tool.
-Aparment is "Appartement", House is "Maison", Dependency is "Dépendance" and  
+You can check if the API is online or working using the get_api_health tool, check the health of the API before providing an estimate.
 commercial or industrial space is "Local industriel. commercial ou assimilé"
 
 GUARDRAILS:
@@ -38,14 +37,16 @@ async def call_gemini_with_mcp(conversation_history: list[dict]) -> str:
             config=genai.types.GenerateContentConfig(
                 system_instruction=SYSTEM_INSTRUCTION,
                 tools=[mcp_client.session],
-                automatic_function_calling=genai.types.AutomaticFunctionCallingConfig()
+                automatic_function_calling=genai.types.AutomaticFunctionCallingConfig(
+
+                )
             ),
             history=conversation_history[:-1],
         )
         # Send only the latest user message
         latest_message = conversation_history[-1]["parts"][0]["text"]
         response = await chat.send_message(latest_message)
-        return response.text
+        return response.text or "Sorry, I couldn't get you the response."
 
 
 # I used AI to add the conversation history to the Gemini call.
