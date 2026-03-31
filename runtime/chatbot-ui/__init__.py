@@ -1,0 +1,1 @@
+# The basic streamlit ui for the chatbot. This will be used to interact with the MCP server and calculate the property estimates
