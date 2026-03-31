@@ -11,6 +11,9 @@ from prediction_contract.request_schema import EstimateRequest
 from prediction_contract.response_schema import EstimateResponse
 from prediction_contract.contract_version import ContractVersion
 
+from dotenv import load_dotenv
+load_dotenv()   
+
 app = FastAPI(title="CESAR Prediction API", version="0.1.0")
 app.add_middleware(
     CORSMiddleware,
