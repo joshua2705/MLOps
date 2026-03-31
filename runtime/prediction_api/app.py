@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Annotated
 
 from fastapi import FastAPI, Depends, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 
 from runtime.inference.load_artifact import load_artifact_from_path, ArtifactNotFoundError
 from runtime.inference.estimate_from_artifact import estimate_from_model, InvalidFeatureError
@@ -11,6 +12,13 @@ from prediction_contract.response_schema import EstimateResponse
 from prediction_contract.contract_version import ContractVersion
 
 app = FastAPI(title="CESAR Prediction API", version="0.1.0")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Load the model and contract once and reuse for every request. We cache in _loaded so we do not
 # read from disk on each call. If CESAR_MODEL_PATH or CESAR_CONTRACT_PATH are missing, we return 503

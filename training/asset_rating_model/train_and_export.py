@@ -38,16 +38,36 @@ def _code_departement_to_numeric(ser: pd.Series) -> pd.Series:
     return ser.map(map_one)
 
 
+def _code_commune_to_numeric(ser: pd.Series) -> pd.Series:
+    def map_one(val: str) -> float:
+        if pd.isna(val):
+            return 0.0
+        s = str(val).strip()
+        try:
+            return float(int(s))
+        except ValueError:
+            return 0.0
+
+    return ser.map(map_one)
+
+
 def build_feature_matrix(df: pd.DataFrame) -> np.ndarray:
     surface = df["surface_reelle_bati"].fillna(0.0).astype(np.float64)
     pieces = df["nombre_pieces_principales"].fillna(0.0).astype(np.float64)
     dept = _code_departement_to_numeric(df["code_departement"].astype(str))
+    commune = _code_commune_to_numeric(df["code_commune"].astype(str))
 
     type_local = df["type_local"].fillna("Appartement").astype(str)
     encoder = OneHotEncoder(categories=[TYPE_LOCAL_CATEGORIES], sparse_output=False)
     type_encoded = encoder.fit_transform(type_local.values.reshape(-1, 1))
 
-    return np.column_stack([surface.values, pieces.values, dept.values, type_encoded])
+    return np.column_stack([
+        surface.values,
+        pieces.values,
+        dept.values,
+        commune.values,
+        type_encoded,
+    ])
 
 
 def train_on_dataframe(df: pd.DataFrame) -> Any:
@@ -83,10 +103,14 @@ def export_artifact(
     return model_path, contract_path
 
 
-# Columns every training CSV must have (order used when building the combined table).
-REQUIRED_TRAINING_COLUMNS_ORDERED = (
-    list(MODEL_FEATURE_NAMES[:3]) + ["type_local", TARGET_NAME]
-)
+REQUIRED_TRAINING_COLUMNS_ORDERED = [
+    "surface_reelle_bati",
+    "nombre_pieces_principales",
+    "code_departement",
+    "code_commune",
+    "type_local",
+    TARGET_NAME,
+]
 REQUIRED_TRAINING_COLUMNS = set(REQUIRED_TRAINING_COLUMNS_ORDERED)
 
 
@@ -113,10 +137,6 @@ def load_all_csvs_from_dir(
     data_dir: Path,
     separator: str = ";",
 ) -> pd.DataFrame:
-    """
-    Load every CSV in data_dir, check they all have the same columns and the required
-    training columns, then concatenate. Raises if no CSVs, missing columns, or schema mismatch.
-    """
     data_dir = Path(data_dir)
     csv_files = sorted(data_dir.glob("*.csv"))
     if not csv_files:
@@ -149,7 +169,6 @@ def load_all_csvs_from_dir(
                 "All CSVs in data/ must have the same columns."
             )
 
-        # Keep only required columns in a fixed order.
         frames.append(df[REQUIRED_TRAINING_COLUMNS_ORDERED])
 
     return pd.concat(frames, ignore_index=True)

@@ -1,10 +1,11 @@
-const DEFAULT_BASE = "/api";
+const DEFAULT_BASE = "http://localhost:8000";
 
 export interface EstimateParams {
   surface_reelle_bati: number;
   nombre_pieces_principales: number;
   code_departement: string;
   type_local: string;
+  code_commune: string;
 }
 
 export interface EstimateResult {

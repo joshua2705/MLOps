@@ -26,18 +26,28 @@ def _code_departement_to_numeric(code: str) -> float:
         return 0.0
 
 
+def _code_commune_to_numeric(code: str) -> float:
+    s = str(code).strip()
+    try:
+        return float(int(s))
+    except ValueError:
+        return 0.0
+
+
 def request_to_feature_row(request: EstimateRequest, contract: ContractVersion) -> np.ndarray:
     categories = contract.type_local_categories
     if request.type_local not in categories:
         raise InvalidFeatureError(f"type_local must be one of {categories}, got {request.type_local!r}")
 
     dept_num = _code_departement_to_numeric(request.code_departement)
+    commune_num = _code_commune_to_numeric(request.code_commune)
     type_one_hot = [1.0 if c == request.type_local else 0.0 for c in categories]
 
     ordered = [
         float(request.surface_reelle_bati),
         float(request.nombre_pieces_principales),
         dept_num,
+        commune_num,
         *type_one_hot,
     ]
     return np.array(ordered, dtype=np.float64).reshape(1, -1)

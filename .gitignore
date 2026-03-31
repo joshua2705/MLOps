@@ -215,7 +215,12 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+<<<<<<< Updated upstream
+=======
 
 # CESAR artifact storage (keep .gitkeep)
 /artifact_storage/*.joblib
 /artifact_storage/contract_*.json
+runtime/rating_ui/node_modules/
+runtime/rating_ui/package-lock.json
+>>>>>>> Stashed changes

@@ -16,8 +16,10 @@ export function mountForm(container: HTMLElement, onParamsChange: ParamsChangeCa
     <label>Rooms <input type="number" name="pieces" min="0" step="1" value="3" /></label>
     <label>Department <input type="text" name="departement" maxlength="3" value="75" /></label>
     <label>Type <select name="type_local"></select></label>
+    <label>Commune code <input type="text" name="code_commune" value="75115" /></label>
     <button type="submit">Estimate</button>
   `;
+
   const select = form.querySelector<HTMLSelectElement>("select[name='type_local']");
   if (select) {
     TYPE_OPTIONS.forEach((t) => {
@@ -35,8 +37,10 @@ export function mountForm(container: HTMLElement, onParamsChange: ParamsChangeCa
       nombre_pieces_principales: Number((fd.get("pieces") as string) || 3),
       code_departement: String(fd.get("departement") || "75").trim().slice(0, 3),
       type_local: String(fd.get("type_local") || TYPE_OPTIONS[0]),
+      code_commune: String(fd.get("code_commune") || "75115").trim(),
     };
     onParamsChange(params);
   });
+
   container.appendChild(form);
 }
