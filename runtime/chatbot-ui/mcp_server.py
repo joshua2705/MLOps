@@ -9,7 +9,8 @@ async def get_property_estimate(
     surface_area: float,
     number_of_rooms: int,
     code_departement: str,
-    type_local: str
+    type_local: str,
+    code_commune: str
 ) -> str:
     """
     Calculates the estimated value of a property based on its characteristics.
@@ -20,7 +21,8 @@ async def get_property_estimate(
         "surface_reelle_bati": surface_area,
         "nombre_pieces_principales": number_of_rooms,
         "code_departement": code_departement,
-        "type_local": type_local
+        "type_local": type_local,
+        "code_commune": code_commune
     }
 
     async with httpx.AsyncClient(timeout=120.0) as client:
