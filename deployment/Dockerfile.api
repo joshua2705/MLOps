@@ -1,14 +1,16 @@
-# CESAR Prediction API. Mount artifact_storage or set CESAR_MODEL_PATH / CESAR_CONTRACT_PATH at runtime.
 FROM python:3.12-slim
 
 WORKDIR /app
 
-RUN pip install --no-cache-dir fastapi "uvicorn[standard]" pydantic joblib scikit-learn numpy
+RUN pip install --no-cache-dir fastapi "uvicorn[standard]" pydantic joblib scikit-learn numpy python-dotenv
 
 COPY prediction_contract/ /app/prediction_contract/
 COPY runtime/ /app/runtime/
+COPY artifact_storage/ /app/artifact_storage/
 
 ENV PYTHONPATH=/app
+ENV CESAR_MODEL_PATH=/app/artifact_storage/model_minimal.joblib
+ENV CESAR_CONTRACT_PATH=/app/artifact_storage/contract_minimal.json
 
 EXPOSE 8000
 
