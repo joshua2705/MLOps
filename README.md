@@ -34,6 +34,15 @@ https://www.pricehubble.com/fr/blog/base-dvf-ventes-immobilieres-france
 ## Project Structure and Installation 
 - Skipping this part for now
 
+## Cloud Deployment
+
+We dockerized the chatbot and deployed the full stack to **Render** so that CESAR works without needing anyone's local machine.
+
+**This is the link to our chatbot**
+   - **Chatbot UI** → https://cesar-chatbot.onrender.com
+
+
+
 ## Possible Next steps
 - Dockerise the MCP and get it running with Kubernetes in Cloud
 - Optimize model by removing Department
