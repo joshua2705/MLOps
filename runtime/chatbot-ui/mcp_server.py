@@ -1,9 +1,14 @@
 from fastmcp import FastMCP
 import httpx
+import os
 
 mcp = FastMCP(name="Real Estate Estimate")
-API_BASE_URL = "http://127.0.0.1:8000"
+#API_BASE_URL = "http://127.0.0.1:8000"
+API_BASE_URL = os.getenv("CESAR_API_URL", "http://127.0.0.1:8000")
 
+'''the getenv function ensures that it defaults to localhost for local development, but 
+when running in Docker or on Cloud Run we will be able to pass the real API URL as an environment variable
+'''
 @mcp.tool()
 async def get_property_estimate(
     surface_area: float,
