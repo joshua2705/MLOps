@@ -20,14 +20,14 @@ The underlying CESAR Prediction API doesn't just blindly guess, it uses a random
 1. Machine Learning Valuation Model
 Trained on the official DVF dataset (French real estate transactions), the model uses a Random Forest model for robust predictions and handles structured tabular data effectively
 
-2. More precise location awareness: CESAR introduces the use of commune code as an input feature.
+2. More precise location awareness: our CESAR model introduces the use of commune code as an input feature.
 
 This improves valuation accuracy by capturing local price variations within the same department and enabling more granular and realistic estimates
 In practice, two properties in the same department can have very different values, the commune-level input allows CESAR to reflect that.
 
 3. Multiple ways to access the model
 
-CESAR is designed to be used in different contexts to serve both end users and technical teams:
+Our CESAR model is designed to be used in different contexts to serve both end users and technical teams:
 Chatbot → natural interaction, no technical knowledge required
 Web UI → simple form for quick estimates
 API → integration into external applications
@@ -35,7 +35,7 @@ CLI → batch processing and automation
 
 4. Health Monitoring
 
-The system includes a /health endpoint to check API availability, prevent failed requests and improve reliability in production environments. This is particularly useful for external systems such as the chatbot.
+Our CESAR model includes a /health endpoint to check API availability, prevent failed requests and improve reliability in production environments. This is particularly useful for external systems such as the chatbot.
 
 5. End-to-end pipeline
 
@@ -48,7 +48,7 @@ user interfaces
 
 ## Deployment
 
-CESAR has been containerized and deployed in the cloud, allowing it to run independently from any local machine.
+The CESAR model has been containerized and deployed in the cloud, allowing it to run independently from any local machine.
 This means no setup is required for end users in a consistent execution environment. It also allows for easy scalability.
 The chatbot interface is publicly accessible and interacts directly with the deployed API.
 
