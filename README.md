@@ -9,7 +9,7 @@ Modhura Das
 
 For further contribution or ideas of extension contact: joshua.alexander2705@gmail.com
 
-## How does it help?
+## How does it help and bring value?
 Cesar acts as your personal real estate agent!
 His sole purpose is to help you make the right decisions by giving you estimate of property thoroughout France!
 You are able to talk to the bot as if chatting with a human without clunky interfaces. 
@@ -17,126 +17,46 @@ The underlying CESAR Prediction API doesn't just blindly guess; it uses a random
 
 ![ScreenShot](CesarBotSS.jpeg)
 
-## How to Use CESAR
-1. Setup
 
-Install dependencies:
+## Key Features
+1. Machine Learning Valuation Model
+Trained on the official DVF dataset (French real estate transactions), the model uses a Random Forest model for robust predictions and handles structured tabular data effectively
 
-pip install -e .
-cd runtime/rating_ui && npm install
+2. More precise location awareness: CESAR introduces the use of commune code as an input feature.
 
-2. Train the Model
+This improves valuation accuracy by capturing local price variations within the same department and enabling more granular and realistic estimates
+In practice, two properties in the same department can have very different values, the commune-level input allows CESAR to reflect that.
 
-Place your dataset (e.g., DVF extract) in the data/ folder.
+3. Multiple ways to access the model
 
-Minimum required columns:
+CESAR is designed to be used in different contexts to serve both end users and technical teams:
+Chatbot → natural interaction, no technical knowledge required
+Web UI → simple form for quick estimates
+API → integration into external applications
+CLI → batch processing and automation
 
-surface_reelle_bati
-nombre_pieces_principales
-code_departement
-type_local
-valeur_fonciere
-code_commune
+4. Health Monitoring
 
-Run training:
-python -m training.scripts.train_from_minimal_csv
+The system includes a /health endpoint to check API availability, prevent failed requests and improve reliability in production environments. This is particularly useful for external systems such as the chatbot.
 
-This generates:
+5. End-to-end pipeline
 
-a trained model (.joblib)
-a contract file (.json)
+CESAR is not just a model, but a complete system:
+data ingestion
+model training
+artifact versioning (model + contract)
+API serving
+user interfaces
 
-Both are stored in artifact_storage/ and will be used for all predictions.
+## Deployment
 
-3. Start the Prediction Service
-
-Set environment variables and launch the API:
-export CESAR_MODEL_PATH=artifact_storage/model_minimal.joblib
-export CESAR_CONTRACT_PATH=artifact_storage/contract_minimal.json
-
-uvicorn runtime.prediction_api.app:app --reload --port 8000
-
-You can verify the service at: http://localhost:8000/docs
-
-4. Using CESAR
-
-CESAR can be used through multiple interfaces depending on the use case.
-API (integration in applications)
-
-curl -X POST "http://localhost:8000/estimate/" \
--H "Content-Type: application/json" \
--d '{
-  "surface_reelle_bati": 50,
-  "nombre_pieces_principales": 3,
-  "code_departement": "75",
-  "type_local": "Appartement",
-  "code_commune": "75115"
-}'
-CLI (automation / internal tools)
-
-Single prediction:
-
-cesar predict-one run \
-  --surface 50 \
-  --pieces 3 \
-  --departement 75 \
-  --type Appartement \
-  --commune 75115
-
-Batch prediction:
-
-cesar batch run --input input.csv --output output.csv
-Web UI (non-technical users)
-cd runtime/rating_ui
-npm run dev
-
-Open:
-
-http://localhost:5173
-
-## Additional Features 
-1. Model trained on data available in the official  **DVF — Demande de Valeur Foncière**  
-https://www.pricehubble.com/fr/blog/base-dvf-ventes-immobilieres-france
-
-2. Location Enhancement – Commune Code
-
-A new feature (code_commune) was introduced to improve geographic precision, as department-level data can be too coarse
-Commune-level input captures local price variations for more accurate valuation in dense urban areas.
-
-3. REST API with Health Monitoring
-
-The system exposes a REST API:
-
-POST /estimate/ → returns property valuation
-GET /health → checks if the service is running
-
-The /health endpoint is used by external systems (e.g., chatbot) to:
-
-Verify API availability
-Avoid failed requests
-Improve system reliability
-
-4. Chatbot Interface (MCP + Gemini SDK)
-
-CESAR is accessible through a chatbot interface.
-
-Capabilities: Natural language interaction, no need for structured forms, integrated with backend API
-
-Example:
-
-“Estimate a 60m² apartment in Paris 15”
-
+CESAR has been containerized and deployed in the cloud, allowing it to run independently from any local machine.
+This means no setup is required for end users in a consistent execution environment. It also allows for easy scalability.
+The chatbot interface is publicly accessible and interacts directly with the deployed API.
 
 ## AI usage declaration
 - AI was used in the streamlit interface UI and for programming how to store a session history 
 - AI tools were used selectively to assist with debugging (e.g., resolving CORS issues and environment configuration)
-
-## Project Structure and Installation 
-- Skipping this part for now
-
-## Cloud Deployment
-
-We dockerized the chatbot and deployed the full stack to **Render** so that CESAR works without needing anyone's local machine.
 
 **This is the link to our chatbot**
    - **Chatbot UI** → https://cesar-chatbot.onrender.com
