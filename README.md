@@ -27,11 +27,10 @@ In practice, two properties in the same department can have very different value
 
 3. Multiple ways to access the model
 
-Our CESAR model is designed to be used in different contexts to serve both end users and technical teams:
-Chatbot → natural interaction, no technical knowledge required
-Web UI → simple form for quick estimates
-API → integration into external applications
-CLI → batch processing and automation
+Our CESAR model is designed to be accessed in different ways, depending on the user’s needs:
+- Chatbot → natural interaction, no technical knowledge required  
+- API → seamless integration into external applications  
+- CLI → batch processing and automation  
 
 4. Health Monitoring
 
