@@ -1,0 +1,64 @@
+from fastmcp import FastMCP
+import httpx
+import os
+
+mcp = FastMCP(name="Real Estate Estimate")
+#API_BASE_URL = "http://127.0.0.1:8000"
+API_BASE_URL = os.getenv("CESAR_API_URL", "http://127.0.0.1:8000")
+
+'''the getenv function ensures that it defaults to localhost for local development, but 
+when running in Docker or on Cloud Run we will be able to pass the real API URL as an environment variable
+'''
+@mcp.tool()
+async def get_property_estimate(
+    surface_area: float,
+    number_of_rooms: int,
+    code_departement: str,
+    type_local: str,
+    code_commune: str
+) -> str:
+    """
+    Calculates the estimated value of a property based on its characteristics.
+    Use this when a user asks about worth of a property.
+    """
+
+    payload = {
+        "surface_reelle_bati": surface_area,
+        "nombre_pieces_principales": number_of_rooms,
+        "code_departement": code_departement,
+        "type_local": type_local,
+        "code_commune": code_commune
+    }
+
+    async with httpx.AsyncClient(timeout=20.0) as client:
+        response = await client.post(f"{API_BASE_URL}/estimate/", json=payload)
+        
+        if response.status_code != 200:
+            return f"Error from estimation API: {response.text}"
+            
+        data = response.json()
+        val = data.get("estimated_value_eur")
+        
+        # Error hanlding if LLM works but the API breaks 
+        if val is None:
+            return "Error: The estimated value was not found in the API response."
+        
+        return f"Estimated Value: {val}€"
+
+@mcp.tool()
+async def get_api_health()-> str:
+    """
+    Checks the health of the inference API and provides additional information.
+    """
+    async with httpx.AsyncClient(timeout=20.0) as client:
+        try:
+            response = await client.get(f"{API_BASE_URL}/health")
+            if response.status_code == 200:
+                print(response.json()["status"])
+                return response.json()["status"]
+            return "API Offline"
+        except Exception as e:
+            return f"Error connecting to API: {str(e)}"
+
+if __name__ == "__main__":
+    mcp.run()

@@ -1,0 +1,5 @@
+streamlit~=1.45
+fastmcp~=2.5
+google-genai~=1.14
+httpx~=0.27
+python-dotenv~=1.0

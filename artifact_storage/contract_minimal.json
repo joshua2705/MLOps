@@ -1,0 +1,19 @@
+{
+  "model_version": "minimal",
+  "feature_names": [
+    "surface_reelle_bati",
+    "nombre_pieces_principales",
+    "code_departement",
+    "type_local_Appartement",
+    "type_local_Maison",
+    "type_local_D\u00e9pendance",
+    "type_local_Local industriel. commercial ou assimil\u00e9"
+  ],
+  "target_name": "valeur_fonciere",
+  "type_local_categories": [
+    "Appartement",
+    "Maison",
+    "D\u00e9pendance",
+    "Local industriel. commercial ou assimil\u00e9"
+  ]
+}
