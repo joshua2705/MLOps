@@ -3,9 +3,7 @@
 ### Context:
 This repository is created as part of an academic endeavour to learn to deploy machine learning models in professional setting.
 It is owned by:
-Joshua Alexander
-Monica Nathalie Bertolini 
-Modhura Das
+Joshua Alexander, Monica Nathalie Bertolini and Modhura Das.
 
 For further contribution or ideas of extension contact: joshua.alexander2705@gmail.com
 
@@ -57,6 +55,7 @@ The chatbot interface is publicly accessible and interacts directly with the dep
 ## AI usage declaration
 - AI was used in the streamlit interface UI and for programming how to store a session history 
 - AI tools were used selectively to assist with debugging (e.g., resolving CORS issues and environment configuration)
+- AI was used in the rephrasing of sentences for a more clear README and usage intruction document
 
 **This is the link to our chatbot**
    - **Chatbot UI** → https://cesar-chatbot.onrender.com
