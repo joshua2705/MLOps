@@ -9,9 +9,9 @@ For further contribution or ideas of extension contact: joshua.alexander2705@gma
 
 ## How does it help and bring value?
 Cesar acts as your personal real estate agent!
-His sole purpose is to help you make the right decisions by giving you estimate of property thoroughout France!
+His sole purpose is to help you make the right decisions by giving you estimate of property price thoroughout France!
 You are able to talk to the bot as if chatting with a human without clunky interfaces. 
-The underlying CESAR Prediction API doesn't just blindly guess; it uses a random forest ML model trained on extensive dataset for estimation. The bot never gives an estimate without a prior health check to the API.
+The underlying CESAR Prediction API doesn't just blindly guess, it uses a random forest ML model trained on extensive dataset for estimation. The bot never gives an estimate without a prior health check to the API.
 
 ![ScreenShot](CesarBotSS.jpeg)
 
